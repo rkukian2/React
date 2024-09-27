@@ -36,16 +36,24 @@ function App() {
   
   useEffect(() => {
     if (!localStorage) {
-      return
+      return;
     }
 
-    let localTodos = localStorage.getItem('todos')
+    let localTodos = localStorage.getItem('todos');
     if (!localTodos) {
-      return
+      return;
     }
-    localTodos = JSON.parse(localTodos.todos)
-    setTodos(localTodos)
-  }, [])
+
+    try {
+      localTodos = JSON.parse(localTodos);
+      if (localTodos && localTodos.todos) {
+        setTodos(localTodos.todos); 
+      }
+    } catch(error) {
+      console.error("Error parsing local storage data:", error);
+    }
+    }, []);
+
   return (
     <>
       <TodoInput  todoValue={todoValue} setTodoValue=
